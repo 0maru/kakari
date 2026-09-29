@@ -188,6 +188,18 @@ export class ReviewRunner {
           'このworkerの設定にプロファイルがありません',
         );
       }
+      // 共有DBの設定変更だけで送信先のproviderや設定が変わらないようにする（15章）
+      if (
+        a.job.provider !== profile.review.provider ||
+        a.job.review_config_version !== profile.review.config_version
+      ) {
+        return await this.release(
+          a,
+          'blocked',
+          'config',
+          `ジョブのprovider・設定版（${a.job.provider}/${a.job.review_config_version}）がこの端末の設定と一致しません`,
+        );
+      }
       if (!profile.enabled || !profile.review.send_to_provider_approved) {
         return await this.release(
           a,

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@kakari/shared": "workspace:*",
+    "@kakari/ui": "workspace:*",
     "@supabase/supabase-js": "^2.117.2",
     "commander": "^15.0.0",
     "yaml": "^2.9.1",

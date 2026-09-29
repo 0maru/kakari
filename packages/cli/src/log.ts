@@ -19,9 +19,13 @@ export function createLogger(
   write: (line: string) => void = (line) => process.stderr.write(`${line}\n`),
 ): Logger {
   const min = ORDER[level] ?? ORDER.info;
-  const emit = (lvl: LogLevel, message: string, fields?: Record<string, unknown>) => {
+  const emit = (lvl: LogLevel, message: string, input?: Record<string, unknown>) => {
+    let fields = input;
     if (ORDER[lvl] < min) return;
     const time = new Date().toISOString();
+    if (fields) {
+      fields = Object.fromEntries(Object.entries(fields).filter(([, v]) => v !== undefined));
+    }
     if (format === 'json') {
       write(JSON.stringify({ time, level: lvl, message, ...fields }));
       return;

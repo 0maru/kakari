@@ -33,7 +33,8 @@ export function toKakariError(error: PostgrestLikeError | Error | null | undefin
   if (!error) return new KakariError('unknown', 'unknown error');
   if (error instanceof KakariError) return error;
   const e = error as PostgrestLikeError & { name?: string };
-  const message = e.message ?? 'unknown error';
+  // DB関数のメッセージに付く接頭辞を外す
+  const message = (e.message ?? 'unknown error').replace(/^kakari:\s*/, '');
   if (e.code === '42501') return new KakariError('forbidden', message, e);
   if (e.code === '22023' || e.code === '23514' || e.code === '22P02')
     return new KakariError('invalid', message, e);

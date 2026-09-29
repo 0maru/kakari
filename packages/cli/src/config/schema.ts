@@ -179,6 +179,8 @@ export const localSchema = z.strictObject({
   admin: z
     .strictObject({
       secret_key_ref: secretSource,
+      /** 本人アカウントを新規作成するときのパスワード（省略時は対話入力） */
+      owner_password_ref: secretSource.optional(),
     })
     .optional(),
   binaries: z

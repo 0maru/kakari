@@ -523,6 +523,19 @@ export class GitHubClient {
   // エンドポイント
   // -------------------------------------------------------------------------
 
+  /** API呼び出しの認証主体（doctorで対象レビュアーと分けて表示する） */
+  async getAuthenticatedUser() {
+    const res = await this.get<{ id: number; login: string }>('user', { conditional: false });
+    return res.data;
+  }
+
+  async getRepository(fullName: string) {
+    const res = await this.get<{ id: number; full_name: string; private: boolean }>(
+      `repos/${fullName}`,
+    );
+    return res.data;
+  }
+
   async getUser(login: string) {
     const res = await this.get<{ id: number; login: string; type: string }>(
       `users/${encodeURIComponent(login)}`,

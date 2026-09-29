@@ -72,3 +72,20 @@ export const SEVERITY_LABELS: Record<string, string> = {
 export function shortSha(sha: string | null | undefined): string {
   return sha ? sha.slice(0, 7) : '-';
 }
+
+export const OPERATION_LABELS: Record<string, string> = {
+  acknowledge_result: '確認済み',
+  set_task_snooze: 'スヌーズ変更',
+  complete_review_task: '対応終了',
+  request_review_retry: '再試行',
+  request_manual_review: '手動再レビュー',
+  set_profile_paused: '自動レビューの停止/再開',
+  clear_usage_pool_block: '利用枠の保留解除',
+};
+
+export const OPERATION_OUTCOME_LABELS: Record<string, string> = {
+  applied: '適用',
+  recorded_only: '履歴のみ記録',
+  conflict: '競合',
+  rejected: '拒否',
+};
