@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.output/
+.tanstack/
+.vinxi/
+.nitro/
+coverage/
+*.log
+.DS_Store
+
+# 実行時データ・ローカル設定（14.4）
+config.yaml
+local.yaml
+/.kakari/
+.env
+.env.*
+!.env.example
+
+# Supabase
+supabase/.branches/
+supabase/.temp/
+supabase/signing_keys.json
