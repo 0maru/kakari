@@ -1,0 +1,18 @@
+{
+  "name": "@kakari/db-tests",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@kakari/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "^2.117.2",
+    "@types/pg": "^8.23.1",
+    "pg": "^8.23.0"
+  }
+}

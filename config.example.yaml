@@ -1,0 +1,93 @@
+# kakari の設定例（SPEC.md 15章）
+# ~/.config/kakari/config.yaml にコピーして編集する。
+# 資格情報そのものは書かず、*_ref で local.yaml の secrets / db_logins を参照する。
+schema_version: 1
+
+# 本人アカウント（ブラウザ・CLIでログインする利用者）
+owner:
+  email: you@example.com
+
+global:
+  timezone: Asia/Tokyo # 日次開始上限の区切りに使う
+  discovery_interval_seconds: 300
+  debounce_seconds: 120
+  max_concurrent_reviews: 1
+  max_auto_starts_per_day: 10
+  lease_seconds: 300
+  heartbeat_seconds: 30
+  execution_timeout_seconds: 1800
+  db_failure_policy: stop_new_reviews
+  ambiguous_execution_policy: require_reconciliation
+
+storage:
+  backend: supabase
+  project_url: http://127.0.0.1:54321 # ローカル開発。本番は https://<project>.supabase.co
+  publishable_key_ref: kakari-db-publishable-key
+
+ui:
+  host: 127.0.0.1
+  port: 4317
+  refresh_interval_seconds: 30
+  page_size: 50
+  start_with_notifier: true
+
+workers:
+  - id: review-worker-1
+    roles: [detector, reviewer, notification_planner]
+    db_session_ref: review-worker-db-login
+    allowed_profiles: [default]
+  - id: notification-client-1
+    roles: [notifier]
+    db_session_ref: notifier-db-login
+    allowed_profiles: [default]
+
+usage_pools:
+  - id: default-claude-plan
+    provider: claude
+    max_concurrent: 1
+
+profiles:
+  - id: default
+    name: Default
+    enabled: false # 送信許可・認証・設定を確認してから有効化する
+
+    github:
+      host: github.com
+      reviewer_login: example-user
+      auth:
+        mode: gh_user
+        credential_ref: default-github
+      owners: [example-org]
+      include_repositories: [] # 空なら owner 内の全リポジトリ
+      exclude_repositories: []
+      exclude_labels: [] # 例: [no-ai-review]
+
+    review:
+      provider: claude
+      usage_pool_id: default-claude-plan
+      config_version: review-v1
+      # prompt_file: prompts/review-v1.md # 省略時は組み込みの指示を使う
+      # model: sonnet
+      allowed_workers: [review-worker-1]
+      allowed_auth_methods: [claude.ai, oauth_token] # claude auth status の authMethod
+      allow_paid_api_fallback: false
+      run_tests: false
+      send_to_provider_approved: false # 対象コードをAIサービスへ送ってよいか確認してから true にする
+
+    notifications:
+      delivery: macos_native # macos_native | console
+      destination_worker_id: notification-client-1
+      poll_interval_seconds: 60
+      max_state_age_seconds: 600
+      timezone: Asia/Tokyo
+      weekdays: [mon, tue, wed, thu, fri]
+      times: ["11:00", "16:00"]
+      repeat_until_acknowledged: true
+      include_code: false
+      detail_level: repository # count_only | repository | title
+      missed_slot_policy: latest_only
+
+    retention:
+      results_days: 90
+      logs_days: 7
+      local_input_hours: 24

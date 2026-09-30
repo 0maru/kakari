@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  作業端末の通知クライアント用（kakari run --worker notification-client-1）。ローカルUIも配信する
+  ~/Library/LaunchAgents/ にコピーし、パスを環境に合わせて書き換えてから
+    launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.kakari.notifier.plist
+  で読み込む。ユーザーセッション（LaunchAgent）で動かし、公式CLIの認証を利用する（17章）。
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.kakari.notifier</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>
+    <string>/Users/YOU/src/kakari/packages/cli/bin/kakari.mjs</string>
+    <string>run</string>
+    <string>--worker</string>
+    <string>notification-client-1</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <dict>
+    <key>SuccessfulExit</key>
+    <false/>
+  </dict>
+  <key>ThrottleInterval</key>
+  <integer>60</integer>
+  <key>ProcessType</key>
+  <string>Interactive</string>
+  <key>StandardOutPath</key>
+  <string>/Users/YOU/Library/Logs/kakari/notifier.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/YOU/Library/Logs/kakari/notifier.log</string>
+</dict>
+</plist>

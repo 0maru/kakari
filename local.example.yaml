@@ -1,0 +1,36 @@
+# 端末ごとの設定（config.yaml と同じディレクトリに local.yaml として置く）
+# 参照先の書式:
+#   env:VAR_NAME / op://vault/item/field（1Password CLI）/ keychain:service/account（macOS）
+#   gh-account:login（gh に登録済みのアカウント）/ file:/absolute/path（0600）/ value:公開してよい値
+schema_version: 1
+
+secrets:
+  # Supabase の publishable key（公開可能）
+  kakari-db-publishable-key: value:sb_publishable_xxxxxxxx
+  # gh auth login 済みのアカウント。普段の gh のアクティブアカウントは切り替えない
+  default-github: gh-account:example-user
+
+# この端末で動かす worker・通知クライアントのDBログイン（本人アカウントとは別）
+db_logins:
+  review-worker-db-login:
+    email: review-worker-1@example.com
+    password_ref: op://kakari/review-worker-1/password
+  notifier-db-login:
+    email: notification-client-1@example.com
+    password_ref: op://kakari/notification-client-1/password
+
+# 管理端末だけ: kakari admin apply で使う secret key（ブラウザ・配布物には含めない）
+admin:
+  secret_key_ref: op://kakari/supabase/secret-key
+  # owner_password_ref: op://kakari/owner/password
+
+# 省略時は PATH から探す
+binaries: {}
+#   claude: /opt/homebrew/bin/claude
+#   terminal_notifier: /opt/homebrew/bin/terminal-notifier
+
+paths: {}
+#   state_dir: ~/.local/state/kakari
+
+ui: {}
+#   public_base_url: http://127.0.0.1:4317
