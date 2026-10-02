@@ -27,7 +27,7 @@ config.example.yaml / local.example.yaml  設定例
 
 | 用途 | 必要なもの |
 | --- | --- |
-| 共通 | Node.js 24 以上、pnpm 10 |
+| 共通 | Node.js 24 以上、pnpm 10（`mise.toml` で指定。`mise install` で揃う） |
 | ローカル DB | Docker（`supabase start`）。本番は Supabase のホスティングでもよい |
 | レビュー実行ホスト | `gh`（`gh auth login` 済み）、`git`、Claude Code（Pro / Max でログイン済み） |
 | 作業端末の通知 | macOS と `terminal-notifier`（`brew install terminal-notifier`） |
@@ -42,6 +42,7 @@ config.example.yaml / local.example.yaml  設定例
 ```bash
 git clone https://github.com/0maru/kakari.git
 cd kakari
+mise install        # mise.toml の Node.js と pnpm を入れる
 pnpm install
 pnpm build          # UI をビルドする（kakari ui が dist を配信する）
 alias kakari="node $PWD/packages/cli/bin/kakari.mjs"   # または pnpm kakari <args>
