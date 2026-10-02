@@ -13,7 +13,7 @@
   <key>ProgramArguments</key>
   <array>
     <string>/opt/homebrew/bin/node</string>
-    <string>/Users/YOU/src/kakari/packages/cli/bin/kakari.mjs</string>
+    <string>/Users/YOU/src/kakari/packages/cli/bin/kakari.ts</string>
     <string>run</string>
     <string>--worker</string>
     <string>review-worker-1</string>

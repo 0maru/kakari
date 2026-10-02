@@ -23,7 +23,10 @@
     "db:start": "supabase start",
     "db:reset": "supabase db reset",
     "db:types": "supabase gen types typescript --local > packages/shared/src/database.types.ts && biome format --write packages/shared/src/database.types.ts",
-    "kakari": "node packages/cli/bin/kakari.mjs"
+    "kakari": "node packages/cli/bin/kakari.ts",
+    "server": "pnpm build && pnpm run --stream \"/^server:/\"",
+    "server:review-worker": "node packages/cli/bin/kakari.ts run --worker review-worker-1",
+    "server:notifier": "node packages/cli/bin/kakari.ts run --worker notification-client-1"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
