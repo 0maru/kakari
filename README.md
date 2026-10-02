@@ -45,7 +45,7 @@ cd kakari
 mise install        # mise.toml の Node.js と pnpm を入れる
 pnpm install
 pnpm build          # UI をビルドする（kakari ui が dist を配信する）
-alias kakari="node $PWD/packages/cli/bin/kakari.mjs"   # または pnpm kakari <args>
+alias kakari="node $PWD/packages/cli/bin/kakari.ts"   # または pnpm kakari <args>
 ```
 
 CLI はビルド不要です。Node.js 24 の型除去で TypeScript のソースを直接実行します。
@@ -120,6 +120,14 @@ kakari scan --profile default --dry-run         # 対象候補と開始予定だ
 kakari run --worker review-worker-1          # 検出・AIレビュー・通知準備
 kakari run --worker notification-client-1    # OS通知（UI も http://127.0.0.1:4317 で配信する）
 ```
+
+1台で両方を動かす場合は、次のコマンドで UI をビルドしてから上記2つの worker を同時に起動できます（Ctrl+C で両方停止）。
+
+```bash
+pnpm run server
+```
+
+設定例の worker ID（`review-worker-1`・`notification-client-1`）を使います。ID を変更した場合は `package.json` の `server:review-worker`・`server:notifier` も合わせてください。UI は通知クライアントが配信するため、`ui.start_with_notifier: true`（既定値）が必要です。
 
 常駐させる場合は `deploy/launchd/` の plist を `~/Library/LaunchAgents/` にコピーし、パスを書き換えて `launchctl bootstrap gui/$(id -u) <plist>` で読み込みます。
 

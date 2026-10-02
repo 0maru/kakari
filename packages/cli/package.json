@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "bin": {
-    "kakari": "./bin/kakari.mjs"
+    "kakari": "./bin/kakari.ts"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json",
